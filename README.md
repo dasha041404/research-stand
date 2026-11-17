@@ -11,24 +11,25 @@
 
 ## Установка окружения
 
-```powershell
-py -3.12 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install pyyaml pandas numpy scipy matplotlib
-Запуск эксперимента
-powershell
+
+```py -3.12 -m venv .venv```
+```.\.venv\Scripts\Activate.ps1```
+```pip install pyyaml pandas numpy scipy matplotlib```
+
+## Запуск эксперимента
 # Поднять стенд
-docker compose up -d app db prometheus grafana cadvisor
+```docker compose up -d app db prometheus grafana cadvisor```
 
 # Запустить прогоны (параметры в configs/experiment.yaml)
-python runner\run_experiment.py --config configs\experiment.yaml --backend both
+```python runner\run_experiment.py --config configs\experiment.yaml --backend both```
 
 # Анализ результатов
-python analysis\analyze.py --input results\raw --output results\processed
+```python analysis\analyze.py --input results\raw --output results\processed```
 
 # Остановить
-docker compose down -v
-Структура проекта
+```docker compose down -v```
+
+## Структура проекта
 sut/ — FastAPI-приложение (имитация волонтёрской платформы)
 
 load/ — Locust-сценарии поведенческой активности
@@ -43,18 +44,5 @@ results/raw/ — сырые CSV и JSON-манифесты
 
 results/processed/ — агрегированные таблицы и графики
 
-Воспроизводимость
+## Воспроизводимость
 Каждый прогон сохраняет манифест: git-commit, версии образов, seed, параметры, характеристики машины. Проверяющий может сравнить свой манифест с эталонным.
-
-text
-
-### Шаг 2. Сохраните файл
-Нажмите **Ctrl+S**.
-
-### Шаг 3. Отправьте изменения на GitHub
-Выполните в PowerShell по очереди:
-
-```powershell
-git add README.md
-git commit -m "Add README instructions"
-git push
