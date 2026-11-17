@@ -12,9 +12,9 @@
 ## Установка окружения
 
 
-```py -3.12 -m venv .venv```
-```.\.venv\Scripts\Activate.ps1```
-```pip install pyyaml pandas numpy scipy matplotlib```
+```py -3.12 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install pyyaml pandas numpy scipy matplotlib```
 
 ## Запуск эксперимента
 # Поднять стенд
