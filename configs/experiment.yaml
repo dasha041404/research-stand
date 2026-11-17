@@ -1,0 +1,14 @@
+name: pilot-experiment
+seed: 20261117
+
+factors:
+  backend: [prometheus, victoriametrics]
+  intensity: [10, 60]
+  cardinality: [low, high]
+
+repetitions: 5
+warmup_seconds: 10
+duration_seconds: 30
+rampup_seconds: 10
+
+randomize_order: true

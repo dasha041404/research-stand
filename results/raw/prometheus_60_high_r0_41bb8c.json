@@ -1,0 +1,19 @@
+{
+  "run_id": "prometheus_60_high_r0_41bb8c",
+  "params": {
+    "backend": "prometheus",
+    "intensity": 60,
+    "cardinality": "high"
+  },
+  "repetition": 0,
+  "seed": 20261117,
+  "git_commit": "unknown",
+  "git_dirty": null,
+  "images": "[{\"ID\":\"sha256:d575c0983531f76c3c392454cec85a30c342263549188ea15662c90581f9a49c\",\"ContainerName\":\"research-stand-app-1\",\"Repository\":\"research-stand-app\",\"Tag\":\"latest\",\"Platform\":\"linux/amd64\",\"Size\":62365523,\"LastTagTime\":\"2026-11-17T18:39:04.939765721Z\"},{\"ID\":\"sha256:aea169b3b211216d9d61c33455ec3a85d2b6f63d8889b1ebf41b97163cffbbc5\",\"ContainerName\":\"research-stand-cadvisor-1\",\"Repository\":\"gcr.io/cadvisor/cadvisor\",\"Tag\":\"v0.49.2\",\"Platform\":\"linux/amd64\",\"Size\":32829427,\"LastTagTime\":\"2026-11-17T19:18:31.945115715Z\"},{\"ID\":\"sha256:b51f6910c985bb146a151a44f0c877e7864b8db452c88c732d1591cbd18a5f12\",\"ContainerName\":\"research-stand-victoriametrics-1\",\"Repository\":\"victoriametrics/victoria-metrics\",\"Tag\":\"v1.102.0\",\"Platform\":\"linux/amd64\",\"Size\":15554931,\"LastTagTime\":\"2026-11-17T18:58:25.301130487Z\"},{\"ID\":\"sha256:079600c9517b678c10cda6006b4487d3174512fd4c6cface37df7822756ed7a5\",\"ContainerName\":\"research-stand-grafana-1\",\"Repository\":\"grafana/grafana\",\"Tag\":\"11.1.0\",\"Platform\":\"linux/amd64\",\"Size\":123027924,\"LastTagTime\":\"2026-11-17T19:17:25.020492636Z\"},{\"ID\":\"sha256:5c435642ca4d8427ca26f4901c11114023004709037880cd7860d5b7176aa731\",\"ContainerName\":\"research-stand-prometheus-1\",\"Repository\":\"prom/prometheus\",\"Tag\":\"v2.52.0\",\"Platform\":\"linux/amd64\",\"Size\":107216079,\"LastTagTime\":\"2026-11-17T18:42:18.887850778Z\"},{\"ID\":\"sha256:e62fbf9d3e2b49816a32c400ed2dba83e3b361e6833e624024309c35d334b412\",\"ContainerName\":\"research-stand-db-1\",\"Repository\":\"postgres\",\"Tag\":\"16.4\",\"Platform\":\"linux/amd64\",\"Size\":153472075,\"LastTagTime\":\"2026-11-17T19:17:12.941691283Z\"}]",
+  "host": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu_count": 16,
+    "machine": "AMD64"
+  },
+  "started_at": "2026-11-17T19:46:35.231338+00:00"
+}
