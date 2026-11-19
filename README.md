@@ -16,20 +16,20 @@
 ```.\.venv\Scripts\Activate.ps1```
 ```pip install pyyaml pandas numpy scipy matplotlib```
 
-## Запуск эксперимента
-# Поднять стенд
+# Запуск эксперимента
+## Поднять стенд
 ```docker compose up -d app db prometheus grafana cadvisor```
 
-# Запустить прогоны (параметры в configs/experiment.yaml)
+## Запустить прогоны (параметры в configs/experiment.yaml)
 ```python runner\run_experiment.py --config configs\experiment.yaml --backend both```
 
-# Анализ результатов
+## Анализ результатов
 ```python analysis\analyze.py --input results\raw --output results\processed```
 
-# Остановить
+## Остановить
 ```docker compose down -v```
 
-## Структура проекта
+# Структура проекта
 sut/ — FastAPI-приложение (имитация волонтёрской платформы)
 
 load/ — Locust-сценарии поведенческой активности
