@@ -1,0 +1,9 @@
+backend,intensity,cardinality,p50_median,p75_median,p90_median,p95_median,p98_median,p99_median,p999_median,p95_iqr,n,p95_ci_low,p95_ci_high
+prometheus,10,high,17.0,20.0,24.0,27.0,31.0,38.0,62.0,2.0,5,24.0,29.0
+prometheus,10,low,17.0,20.0,23.0,25.0,31.0,37.0,58.0,1.5,15,24.0,26.0
+prometheus,60,high,110.0,140.0,180.0,190.0,220.0,240.0,310.0,0.0,5,,
+prometheus,60,low,110.0,140.0,170.0,190.0,210.0,220.0,280.0,0.0,5,,
+victoriametrics,10,high,17.0,21.0,24.0,27.0,32.0,38.0,65.0,4.0,5,22.0,38.0
+victoriametrics,10,low,16.0,19.0,22.0,24.0,28.0,33.0,57.0,5.0,5,19.0,27.0
+victoriametrics,60,high,110.0,140.0,170.0,190.0,210.0,230.0,290.0,0.0,5,,
+victoriametrics,60,low,110.0,140.0,170.0,190.0,210.0,230.0,290.0,10.0,5,190.0,200.0
