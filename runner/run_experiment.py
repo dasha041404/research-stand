@@ -55,12 +55,22 @@ def manifest(run_id, params, rep, cfg):
     }
 
 
-def locust(users, seconds, prefix):
+def locust(rps, rampup, seconds, prefix):
+    # Рассчитываем паузу между запросами для одного пользователя
+    # Чтобы получить RPS=10, пользователь ждет 0.1 сек. Для RPS=60 - 0.016 сек.
+    pacing = 1.0 / rps
+    users = rps  # Количество виртуальных пользователей равно RPS
+
     subprocess.run(
-        ["docker", "compose", "--profile", "run", "run", "--rm", "load",
+        ["docker", "compose", "--profile", "run", "run", "--rm",
+         "-e", f"LOCUST_WAIT_TIME={pacing}",   # Передаем переменную в контейнер
+         "load",
          "-f", "/mnt/locust/locustfile.py", "--headless",
-         "-u", str(users), "-r", str(users), "-t", f"{seconds}s",
-         "--host", "http://app:8000", "--csv", f"/results/{prefix}"],
+         "-u", str(users), 
+         "-r", str(rampup),                    # Скорость нарастания (rampup)
+         "-t", f"{seconds}s",                  # Время теста
+         "--host", "http://app:8000", 
+         "--csv", f"/results/{prefix}"],
         check=True,
     )
 
@@ -98,19 +108,21 @@ def main():
 
     for i, p in enumerate(plan, 1):
         backend = p["backend"]
-        # Останавливаем оба backend, поднимаем нужный
-        sh("docker", "compose", "stop", "prometheus", "victoriametrics", check=False)
+        
+        print(f"\n[{i}/{len(plan)}] Preparing {backend} | intensity={p['intensity']} | cardinality={p['cardinality']} | rep={p['rep']}")
+
+        # 1. УДАЛЯЕМ старые контейнеры TSDB (полный сброс хранилища)
+        sh("docker", "compose", "rm", "-s", "-f", "prometheus", "victoriametrics", check=False)
+        
+        # 2. ПОДНИМАЕМ нужную TSDB
         sh("docker", "compose", "up", "-d", backend)
+        
+        # 3. ПЕРЕЗАПУСКАЕМ SUT (полный сброс памяти и кардинальности)
+        sh("docker", "compose", "up", "-d", "--force-recreate", "app")
+        
+        time.sleep(10)  # Ждем, пока TSDB запустится и начнет скрейпить SUT
 
-        # Очистка хранилища backend между прогонами
-        if backend == "prometheus":
-            sh("docker", "compose", "exec", "-T", "prometheus",
-               "rm", "-rf", "/prometheus/data", check=False)
-        # (для VM — аналогично, если нужно)
-
-        time.sleep(5)  # дождаться старта
-
-        # Устанавливаем кардинальность
+        # 4. Устанавливаем кардинальность (через Python, так как curl нет в slim-образе)
         subprocess.run(
             ["docker", "compose", "exec", "-T", "app",
              "python", "-c", 
@@ -119,19 +131,19 @@ def main():
         )
 
         run_id = f"{backend}_{p['intensity']}_{p['cardinality']}_r{p['rep']}_{uuid.uuid4().hex[:6]}"
-        print(f"[{i}/{len(plan)}] {run_id}")
-
-        # Warm-up (не идёт в анализ)
-        locust(p["intensity"], cfg["warmup_seconds"], f"warmup_{run_id}")
-        # Основной прогон
-        locust(p["intensity"], cfg["duration_seconds"], run_id)
+        
+        # 5. Warm-up (прогрев)
+        locust(p["intensity"], cfg["rampup_seconds"], cfg["warmup_seconds"], f"warmup_{run_id}")
+        
+        # 6. Основной прогон
+        locust(p["intensity"], cfg["rampup_seconds"], cfg["duration_seconds"], run_id)
 
         params = {k: v for k, v in p.items() if k != "rep"}
         (out / f"{run_id}.json").write_text(
             json.dumps(manifest(run_id, params, p["rep"], cfg), indent=2, ensure_ascii=False)
         )
 
-    print("Done. Raw results in results/raw/")
+    print("\nDone. Raw results in results/raw/")
 
 
 if __name__ == "__main__":

@@ -19,7 +19,7 @@ active_sessions = Gauge("active_sessions", "Number of active sessions")
 
 ACTION_TYPES = ["event_signup", "application_submit", "review_post",
                 "achievement_received", "friend_invited"]
-CLUSTERS = [f"cluster_{i}" for i in range(1, 6)]  # 5 кластеров
+CLUSTERS = [f"cluster_{i}" for i in range(1, 21)]  # 20 кластеров
 
 Instrumentator().instrument(app).expose(app)
 
