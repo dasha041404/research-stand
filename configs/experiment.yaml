@@ -10,5 +10,4 @@ repetitions: 5
 warmup_seconds: 10
 duration_seconds: 30
 rampup_seconds: 10
-
 randomize_order: true

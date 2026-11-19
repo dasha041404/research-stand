@@ -1,9 +1,0 @@
-backend,intensity,cardinality,median,iqr,n,ci_low,ci_high
-prometheus,10,high,38.0,1.0,5,37.0,39.0
-prometheus,10,low,37.5,3.25,6,34.5,39.5
-prometheus,60,high,93.0,2.0,5,92.0,94.0
-prometheus,60,low,94.0,1.0,5,93.0,95.0
-victoriametrics,10,high,39.0,0.0,5,,
-victoriametrics,10,low,38.0,1.0,5,36.0,39.0
-victoriametrics,60,high,94.0,1.0,5,93.0,96.0
-victoriametrics,60,low,91.0,3.0,5,90.0,94.0

@@ -48,8 +48,12 @@ def main():
             **meta["params"],
             "rep": meta["repetition"],
             "p50": agg["50%"],
+            "p75": agg["75%"],
+            "p90": agg["90%"],
             "p95": agg["95%"],
+            "p98": agg["98%"],
             "p99": agg["99%"],
+            "p999": agg["99.9%"],
             "rps": agg["Requests/s"],
             "fail": agg["Failure Count"],
         })
@@ -61,15 +65,25 @@ def main():
     df = pd.DataFrame(rows)
     df.to_csv(out / "runs.csv", index=False)
 
-    # Сводка: медиана, IQR, CI по p95
-    summary = (df.groupby(["backend", "intensity", "cardinality"])["p95"]
-               .agg(median="median",
-                    iqr=lambda s: s.quantile(.75) - s.quantile(.25),
-                    n="count"))
+        # 1. Считаем медианы для ВСЕХ перцентилей
+    summary = (df.groupby(["backend", "intensity", "cardinality"])[["p50", "p75", "p90", "p95", "p98", "p99", "p999"]]
+               .median()
+               .add_suffix("_median"))
+
+    # 2. Считаем IQR для p95 (как и было)
+    iqr = df.groupby(["backend", "intensity", "cardinality"])["p95"].apply(lambda s: s.quantile(.75) - s.quantile(.25))
+    summary["p95_iqr"] = iqr
+
+    # 3. Считаем количество повторов (n)
+    summary["n"] = df.groupby(["backend", "intensity", "cardinality"]).size()
+
+    # 4. Считаем 95% доверительный интервал (CI) для p95 (как и было)
     ci = df.groupby(["backend", "intensity", "cardinality"])["p95"].apply(ci95)
-    summary["ci_low"] = [c[0] for c in ci]
-    summary["ci_high"] = [c[1] for c in ci]
-    summary.to_csv(out / "summary_p95.csv")
+    summary["p95_ci_low"] = [c[0] for c in ci]
+    summary["p95_ci_high"] = [c[1] for c in ci]
+
+    # Сохраняем и выводим
+    summary.to_csv(out / "summary_metrics.csv") # Переименовал файл для точности
     print(summary)
 
     # Mann–Whitney + Cliff's δ: Prometheus vs VictoriaMetrics на каждом уровне
